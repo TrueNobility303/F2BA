@@ -18,7 +18,7 @@ To plot the figure, further run
 ```
 python -u plot2fig.py
 ```
-Note that our training logs are also contained in the file `plot2fig.py`.
+Note that our training logs are also stored as arrays in the file `plot2fig.py`.
 
 ## Distributed Learable Regularization
 To reproduce our experiment results, run
