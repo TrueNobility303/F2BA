@@ -2,7 +2,7 @@
 
 Codes are adapted from [BOME](https://github.com/Cranial-XIX/BOME), which is published in NeurIPS 2022.
 
-## Single Machine Data Hypercleaning
+## Single-Machine Data Hypercleaning
 
 To reproduce our experiment results, please download the dataset `fashion_data_cleaning.pt` and `mnist_data_cleaning.pt`  at [this link](https://drive.google.com/file/d/14deh-F4YlEH1c_s0P5DSliU042QV39K3/view?usp=sharing) and put it under the data folder specified in `args.dataset` in `single_machine/data_cleaning.py`. Then run
 
