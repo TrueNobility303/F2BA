@@ -515,19 +515,3 @@ if __name__ == "__main__":
         for p in processes:
             p.join()
         
-        # stats = eval(args.alg)(args=args,
-        #                        x=x,
-        #                        w=w,
-        #                        trainset=trainset,
-        #                        valset=valset,
-        #                        testset=testset,
-        #                        tevalset=tevalset,
-        #                        size=args.size)
-
-        # if args.alg == "BOME":
-        #     save_path = f"./{args.model_path}/{args.alg}u1{args.u1}_k{args.iterations}_xlr{args.x_lr}_wlr{args.w_lr}_xhatlr{args.xhat_lr}_sd{args.seed}"
-        # elif args.alg == 'BVFSM':
-        #     save_path = f"./{args.model_path}/{args.alg}_k{args.iterations}_xlr{args.x_lr}_wlr{args.w_lr}_xhatlr{args.xhat_lr}_sd{args.seed}"
-        # else:
-        #     save_path = f"./{args.model_path}/{args.alg}_k{args.iterations}_xlr{args.x_lr}_wlr{args.w_lr}_sd{args.seed}"
-        # torch.save(stats, save_path)
