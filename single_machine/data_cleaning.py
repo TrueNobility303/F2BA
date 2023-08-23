@@ -32,10 +32,8 @@ from torchvision import datasets
 
 METHODS = [
     'F2BA',
-    'AID_CG',
-    'AID_FP',
-    'ITD',
-    'reverse',
+    'AID',
+    'ITD'
 ]
 
 
@@ -289,14 +287,16 @@ def F2BA(args, x, w, trainset, valset, testset, tevalset, clean_indices):
         print(f"[info] epoch {epoch:5d} | te loss {test_loss:6.4f} | te acc {test_acc:4.2f} | teval loss {teval_loss:6.4f} | time {total_time:6.2f} | w-min {w.min().item():4.2f} w-max {w.max().item():4.2f} | f1 {f1[2]:4.2f}")
     return stats
 
-def reverse(args, x, w, trainset, valset, testset, tevalset, clean_indices):
-    return implicit(args, x, w, trainset, valset, testset, tevalset, clean_indices, opt='reverse')
+# the reverse mode for ITD
+# def reverse(args, x, w, trainset, valset, testset, tevalset, clean_indices):
+#     return implicit(args, x, w, trainset, valset, testset, tevalset, clean_indices, opt='reverse')
 
-def AID_CG(args, x, w, trainset, valset, testset, tevalset, clean_indices):
+def AID(args, x, w, trainset, valset, testset, tevalset, clean_indices):
     return implicit(args, x, w, trainset, valset, testset, tevalset, clean_indices, opt='AID_CG')
 
-def AID_FP(args, x, w, trainset, valset, testset, tevalset, clean_indices):
-    return implicit(args, x, w, trainset, valset, testset, tevalset, clean_indices, opt='AID_FP')
+# the fix point iteration implement of AID
+# def AID_FP(args, x, w, trainset, valset, testset, tevalset, clean_indices):
+#     return implicit(args, x, w, trainset, valset, testset, tevalset, clean_indices, opt='AID_FP')
 
 def implicit(args, x, w, trainset, valset, testset, tevalset, clean_indices, opt):
     outer_loss = lambda x, w: f(x[0], w[0], valset)
