@@ -26,3 +26,4 @@ python -u l2reg.py
 ```
 And you can find the training logs and plot the figure in a similar way. 
 Note that our training logs are also stored as arrays in the file `plot2fig.py`.
+You should change it to your own logs to plot the figure.
