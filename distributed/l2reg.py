@@ -324,6 +324,7 @@ def AID(rank, args):
 
         t0 = time.time()
         for it in range(args.iterations):
+            xhat =  x.detach().clone().requires_grad_()
             inner_opt.zero_grad()
             x.grad = g_x(x, w, trainset)
             dist.all_reduce(x.grad.data, op=dist.ReduceOp.SUM)
@@ -338,15 +339,15 @@ def AID(rank, args):
 
         for it in range(args.iterations):
             inverse_opt.zero_grad()
-            gx = g_x(x, w, trainset,create_graph=True,retain_graph=True).reshape([-1])
-            v.grad =  torch.autograd.grad(torch.matmul(gx, v.detach()), x)[0].reshape([-1])
+            gx = g_x(xhat, w, trainset,create_graph=True,retain_graph=True).reshape([-1])
+            v.grad =  torch.autograd.grad(torch.matmul(gx, v.detach()), xhat)[0].reshape([-1])
             dist.all_reduce(v.grad.data, op=dist.ReduceOp.SUM)
             v.grad.data /= args.size
             v.grad.data -= b
             inverse_opt.step()            
 
         outer_opt.zero_grad()
-        gx = g_x(x, w, trainset,create_graph=True).reshape([-1])
+        gx = g_x(xhat, w, trainset,create_graph=True).reshape([-1])
         w.grad =  -torch.autograd.grad(torch.matmul(gx, v.detach()), w, retain_graph=True)[0]
         dist.all_reduce(w.grad.data, op=dist.ReduceOp.SUM)
         w.grad.data /= args.size
