@@ -16,7 +16,7 @@ To plot the figure, further run
 ```
 python -u plot2fig.py
 ```
-Note that our training logs are also stored as arrays in the file `plot2fig.py`.
+
 
 ## Distributed Learable Regularization
 To reproduce our experiment results, please download the dataset `l2reg.pt` at [this link](https://drive.google.com/file/d/14deh-F4YlEH1c_s0P5DSliU042QV39K3/view?usp=sharing) and put it under the data folder specified in `args.dataset` in `distributed/l2reg.py`. Then run
@@ -24,4 +24,5 @@ To reproduce our experiment results, please download the dataset `l2reg.pt` at [
 cd ./distributed
 python -u l2reg.py
 ```
-And you can find the training logs and plot the figure in a similar way.
+And you can find the training logs and plot the figure in a similar way. 
+Note that our training logs are also stored as arrays in the file `plot2fig.py`.
