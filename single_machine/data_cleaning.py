@@ -117,7 +117,7 @@ def get_data(args):
 ### initialize a linear model
 
 def get_model(in_features, out_features, device):
-    x = torch.zeros(out_features, in_features, requires_grad=True, device=device)
+    x = torch.zeros(out_features, in_features+1, requires_grad=True, device=device)
 
     weight = torch.empty((out_features, in_features))
     bias = torch.empty(out_features)
@@ -128,7 +128,7 @@ def get_model(in_features, out_features, device):
 
     x[:,:in_features].data.copy_(weight.clone().to(device))
     x[:, -1].data.copy_(bias.clone().to(device))
-    x.data.copy_(weight.clone().to(device))
+    # x.data.copy_(weight.clone().to(device))
     return x
 
 def model_forward(x, inputs):
