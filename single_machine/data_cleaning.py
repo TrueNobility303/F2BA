@@ -40,21 +40,19 @@ METHODS = [
 def parse_args():
     parser = argparse.ArgumentParser()
     parser.add_argument('--dataset', type=str, default="mnist", choices=["mnist", "fashion"])
-    parser.add_argument('--train_size', type=int, default=60000)
+    parser.add_argument('--train_size', type=int, default=50000)
     parser.add_argument('--val_size', type=int, default=10000)
-    parser.add_argument('--pretrain', action='store_true',
-                                      default=False, help='whether to create data and pretrain on valset')
+    parser.add_argument('--pretrain', type=int,  default=0, choices=[0,1], help='whether to create data and pretrain on valset')
+
     parser.add_argument('--epochs', type=int, default=5000)
     parser.add_argument('--iterations', type=int, default=10, help='T')
     parser.add_argument('--K', type=int, default=10, help='k')
-    parser.add_argument('--data_path', default='./data', help='where to save data')
+    parser.add_argument('--data_path', default='~/Data', help='where to save data')
     parser.add_argument('--model_path', default='./save_data_cleaning', help='where to save model')
     parser.add_argument('--noise_rate', type=float, default=0.5)
     parser.add_argument('--x_lr', type=float, default=0.01)
     parser.add_argument('--xhat_lr', type=float, default=0.01)
     parser.add_argument('--w_lr', type=float, default=100)
-    parser.add_argument('--w_momentum', type=float, default=0.0)
-    parser.add_argument('--x_momentum', type=float, default=0.0)
 
     parser.add_argument('--seed', type=int, default=1)
     parser.add_argument('--alg', type=str, default='F2BA', choices=METHODS)
@@ -75,22 +73,20 @@ def get_data(args):
 
     trainset = data[args.dataset](root=args.data_path,
                                   train=True,
-                                  download=True)
+                                  download=False)
     testset  = data[args.dataset](root=args.data_path,
                                   train=False,
-                                  download=True)
+                                  download=False)
 
     indices = torch.randperm(len(trainset))
 
     train_x = trainset.data[indices[:args.train_size]] / 255.
     val_x   = trainset.data[indices[args.train_size:args.train_size+args.val_size]] / 255.
-    teval_x = trainset.data[indices[args.train_size+args.val_size:]] / 255.
     test_x  = testset.data / 255.
 
     targets = trainset.targets if args.dataset in ["mnist", "fashion"] else torch.LongTensor(trainset.targets) 
     train_y = targets[indices[:args.train_size]]
     val_y   = targets[indices[args.train_size:args.train_size+args.val_size]]
-    teval_y = targets[indices[args.train_size+args.val_size:]]
     test_y  = torch.LongTensor(testset.targets)
 
     num_classes = test_y.unique().shape[0]
@@ -110,9 +106,9 @@ def get_data(args):
 
     trainset = ( torch.flatten((train_x  - mean)/(std+1e-4), start_dim=1), train_y )
     valset   = ( torch.flatten((val_x    - mean)/(std+1e-4), start_dim=1), val_y   )
-    testset  = ( torch.flatten((test_x   - mean)/(std+1e-4), start_dim=1), test_y  )
-    tevalset = ( torch.flatten((teval_x  - mean)/(std+1e-4), start_dim=1), teval_y )
-    return trainset, valset, testset, tevalset, old_train_y
+    testset = ( torch.flatten((test_x  - mean)/(std+1e-4), start_dim=1), test_y )
+
+    return trainset, valset, testset, old_train_y
 
 ### initialize a linear model
 
@@ -128,7 +124,6 @@ def get_model(in_features, out_features, device):
 
     x[:,:in_features].data.copy_(weight.clone().to(device))
     x[:, -1].data.copy_(bias.clone().to(device))
-    # x.data.copy_(weight.clone().to(device))
     return x
 
 def model_forward(x, inputs):
@@ -191,17 +186,14 @@ def f_x(x, w, dataset, retain_graph=False, create_graph=False):
 
 ### Define evaluation metric
 
-def evaluate(x, testset, tevalset):
+def evaluate(x, testset):
     with torch.no_grad():
         test_x, test_y = testset  
         y = model_forward(x, test_x)
         test_loss = F.cross_entropy(y, test_y).detach().item()
         test_acc = y.argmax(-1).eq(test_y).float().mean().detach().cpu().item()
-        # have a separate test val set since valset is used for training
-        teval_x, teval_y = tevalset
-        y_ = model_forward(x, teval_x)
-        teval_loss = F.cross_entropy(y_, teval_y).detach().item()
-    return test_loss, test_acc, teval_loss
+        
+    return test_loss, test_acc
 
 
 def evaluate_importance_f1(w, clean_indices):
@@ -220,13 +212,12 @@ def evaluate_importance_f1(w, clean_indices):
 #
 ###############################################################################
 
-def simple_train(args, x, data_x, data_y, testset, tevalset, tag='pretrain', regularize=False): # directly train on the dataset
-    opt = torch.optim.SGD([x], lr=args.x_lr, momentum=args.x_momentum)
+def simple_train(args, x, data_x, data_y, testset, tag='pretrain', regularize=False): # directly train on the dataset
+    opt = torch.optim.SGD([x], lr=args.x_lr)
     n = data_x.shape[0]
 
     n_epochs = 5000
-    best_teval_loss = np.inf
-    final_test_loss = 0.
+    final_test_loss = np.inf
     final_test_acc = 0.
     best_x = None
 
@@ -239,26 +230,27 @@ def simple_train(args, x, data_x, data_y, testset, tevalset, tag='pretrain', reg
         loss.backward()
         opt.step()
 
-        test_loss, test_acc, teval_loss = evaluate(x, testset, tevalset)
-        if teval_loss <= best_teval_loss:
-            best_teval_loss = teval_loss
+        test_loss, test_acc = evaluate(x, testset)
+        
+        if test_loss <= final_test_loss:
             final_test_loss = test_loss
             final_test_acc  = test_acc
             best_x = x.data.clone()
         print(f"[{tag}] epoch {epoch:5d} test loss {test_loss:10.4f} test acc {test_acc:10.4f}")
+    
     return final_test_loss, final_test_acc, best_x
 
-def F2BA(args, x, w, trainset, valset, testset, tevalset, clean_indices):
+def F2BA(args, x, w, trainset, valset, testset, clean_indices):
     xhat = copy.deepcopy(x)
 
     total_time = 0.0
     n = trainset[0].shape[0]
     stats = []
     
-    outer_opt = torch.optim.SGD([w], lr=args.w_lr, momentum=args.w_momentum)
+    outer_opt = torch.optim.SGD([w], lr=args.w_lr)
     inner_opt = torch.optim.SGD([
         {'params': [x], 'lr': args.x_lr},
-        {'params': [xhat], 'lr': args.xhat_lr}], momentum=args.x_momentum)
+        {'params': [xhat], 'lr': args.xhat_lr}])
 
     for epoch in range(args.epochs):
 
@@ -281,71 +273,51 @@ def F2BA(args, x, w, trainset, valset, testset, tevalset, clean_indices):
         total_time += t1 - t0
         w.data.clamp_(0.0, 1.0)
 
-        test_loss, test_acc, teval_loss = evaluate(x, testset, tevalset)
+        test_loss, test_acc = evaluate(x, testset)
         f1 = evaluate_importance_f1(w, clean_indices)
-        stats.append((total_time, test_loss, test_acc, teval_loss))
-        print(f"[info] epoch {epoch:5d} | te loss {test_loss:6.4f} | te acc {test_acc:4.2f} | teval loss {teval_loss:6.4f} | time {total_time:6.2f} | w-min {w.min().item():4.2f} w-max {w.max().item():4.2f} | f1 {f1[2]:4.2f}")
+        stats.append((total_time, test_loss, test_acc))
+        print(f"[info] epoch {epoch:5d} | te loss {test_loss:6.4f} | te acc {test_acc:4.2f} | time {total_time:6.2f} | w-min {w.min().item():4.2f} w-max {w.max().item():4.2f} | f1 {f1[2]:4.2f}")
     return stats
 
-# the reverse mode for ITD
-# def reverse(args, x, w, trainset, valset, testset, tevalset, clean_indices):
-#     return implicit(args, x, w, trainset, valset, testset, tevalset, clean_indices, opt='reverse')
 
-def AID(args, x, w, trainset, valset, testset, tevalset, clean_indices):
-    return implicit(args, x, w, trainset, valset, testset, tevalset, clean_indices, opt='AID_CG')
-
-# the fix point iteration implement of AID
-# def AID_FP(args, x, w, trainset, valset, testset, tevalset, clean_indices):
-#     return implicit(args, x, w, trainset, valset, testset, tevalset, clean_indices, opt='AID_FP')
-
-def implicit(args, x, w, trainset, valset, testset, tevalset, clean_indices, opt):
+def AID(args, x, w, trainset, valset, testset,  clean_indices):
     outer_loss = lambda x, w: f(x[0], w[0], valset)
     inner_loss = lambda x, w, d: g(x[0], w[0], d)
 
-    #inner_opt = hg.GradientDescent(inner_loss, args.x_lr, data_or_iter=trainset)
-    inner_opt = hg.Momentum(inner_loss, args.x_lr, args.x_momentum, data_or_iter=trainset)
+    inner_opt = hg.GradientDescent(inner_loss, args.x_lr, data_or_iter=trainset)
     inner_opt_cg = hg.GradientDescent(inner_loss, 1., data_or_iter=trainset)
-    outer_opt = torch.optim.SGD([w], lr=args.w_lr, momentum=args.w_momentum)
+    outer_opt = torch.optim.SGD([w], lr=args.w_lr)
 
     total_time = 0.0
     stats = []
 
     for epoch in range(args.epochs):
 
-        momentum = torch.zeros_like(x) 
         t0 = time.time()
-        x_history = [[x, momentum]]
+        x_history = [[x]]
         for it in range(args.iterations):
             x_history.append(inner_opt(x_history[-1], [w], create_graph=False))
 
         outer_opt.zero_grad()
-        if args.alg == 'reverse':
-            hg.reverse(x_history[-args.K-1:], [w], [inner_opt]*args.K, outer_loss)
-        elif opt == 'AID_CG':
-            hg.CG([x_history[-1][0]], [w], args.K, inner_opt_cg, outer_loss, stochastic=False, set_grad=True)
-        elif opt == 'AID_FP':
-            hg.fixed_point(x_history[-1], [w], args.K, inner_opt, outer_loss, stochastic=False, set_grad=True)
-        else:
-            raise NotImplementedError
+        hg.CG([x_history[-1][0]], [w], args.K, inner_opt_cg, outer_loss, stochastic=False, set_grad=True)
         outer_opt.step()
         t1 = time.time()
         total_time += t1 - t0
         w.data.clamp_(0.0, 1.0)
 
         x.data = x_history[-1][0].data.clone()
-        test_loss, test_acc, teval_loss = evaluate(x, testset, tevalset)
-        stats.append((total_time, test_loss, test_acc, teval_loss))
-        print(f"[info] epoch {epoch:5d} | te loss {test_loss:6.4f} | te acc {test_acc:4.2f} | teval loss {teval_loss:6.4f} | time {total_time:6.2f} | w-min {w.min().item():4.2f} w-max {w.max().item():4.2f}")
+        test_loss, test_acc = evaluate(x, testset)
+        stats.append((total_time, test_loss, test_acc))
+        print(f"[info] epoch {epoch:5d} | te loss {test_loss:6.4f} | te acc {test_acc:4.2f} | time {total_time:6.2f} | w-min {w.min().item():4.2f} w-max {w.max().item():4.2f}")
     return stats
 
 
-def ITD(args, x, w, trainset, valset, testset, tevalset, clean_indices):
+def ITD(args, x, w, trainset, valset, testset,  clean_indices):
     outer_loss = lambda x, w: f(x[0], w[0], valset)
     inner_loss = lambda x, w, d: g(x[0], w[0], d)
 
-    #inner_opt = hg.GradientDescent(inner_loss, args.x_lr, data_or_iter=trainset)
-    inner_opt = hg.Momentum(inner_loss, args.x_lr, args.x_momentum, data_or_iter=trainset)
-    outer_opt = torch.optim.SGD([w], lr=args.w_lr, momentum=args.w_momentum)
+    inner_opt = hg.GradientDescent(inner_loss, args.x_lr, data_or_iter=trainset)
+    outer_opt = torch.optim.SGD([w], lr=args.w_lr)
 
     total_time = 0.0
     stats = []
@@ -354,7 +326,7 @@ def ITD(args, x, w, trainset, valset, testset, tevalset, clean_indices):
 
         momentum = torch.zeros_like(x) 
         t0 = time.time()
-        x_history = [[x, momentum]]
+        x_history = [[x]]
         for it in range(args.iterations):
             x_history.append(inner_opt(x_history[-1], [w], create_graph=True))
 
@@ -369,16 +341,16 @@ def ITD(args, x, w, trainset, valset, testset, tevalset, clean_indices):
 
         x.data = x_history[-1][0].data.clone()
 
-        test_loss, test_acc, teval_loss = evaluate(x, testset, tevalset)
-        stats.append((total_time, test_loss, test_acc, teval_loss))
-        print(f"[info] epoch {epoch:5d} | te loss {test_loss:6.4f} | te acc {test_acc:4.2f} | teval loss {teval_loss:6.4f} | time {total_time:6.2f} | w-min {w.min().item():4.2f} w-max {w.max().item():4.2f}")
+        test_loss, test_acc = evaluate(x, testset)
+        stats.append((total_time, test_loss, test_acc))
+        print(f"[info] epoch {epoch:5d} | te loss {test_loss:6.4f} | te acc {test_acc:4.2f} | time {total_time:6.2f} | w-min {w.min().item():4.2f} w-max {w.max().item():4.2f}")
     return stats
 
 
 if __name__ == "__main__":
     args = parse_args()
 
-    if args.pretrain: # preprocess data and pretrain a model on validation set
+    if args.pretrain is True: # preprocess data and pretrain a model on validation set
 
         if not os.path.exists(args.data_path):
             os.makedirs(args.data_path)
@@ -387,8 +359,8 @@ if __name__ == "__main__":
             os.makedirs(args.model_path)
 
         ### generate data
-        trainset, valset, testset, tevalset, old_train_y = get_data(args)
-        torch.save((trainset, valset, testset, tevalset, old_train_y),
+        trainset, valset, testset, old_train_y = get_data(args)
+        torch.save((trainset, valset, testset, old_train_y),
                    os.path.join(args.data_path, f"{args.dataset}_data_cleaning.pt"))
         print(f"[info] successfully generated data to {args.data_path}/{args.dataset}_data_cleaning.pt")
 
@@ -400,7 +372,6 @@ if __name__ == "__main__":
         trainset = (trainset[0].to(args.device), trainset[1].to(args.device))
         valset   = (valset[0].to(args.device),   valset[1].to(args.device))
         testset  = (testset[0].to(args.device),  testset[1].to(args.device))
-        tevalset = (tevalset[0].to(args.device), tevalset[1].to(args.device))
         old_train_y = old_train_y.to(args.device)
 
         x = get_model(n_feats, num_classes, args.device)
@@ -409,13 +380,13 @@ if __name__ == "__main__":
         # lower bound (train on noisy train + valset)
         tmp_x = torch.cat([trainset[0], valset[0]], 0)
         tmp_y = torch.cat([trainset[1], valset[1]], 0)
-        test_loss1, test_acc1, best_x1 = simple_train(args, x, tmp_x, tmp_y, testset, tevalset, regularize=True)
+        test_loss1, test_acc1, best_x1 = simple_train(args, x, tmp_x, tmp_y, testset, regularize=True)
         torch.save(best_x1.data.cpu().clone(),
                    os.path.join(args.model_path, f"{args.dataset}_pretrained.pt"))
 
         # a baseline: train on valset
         x.data.copy_(sd)
-        test_loss2, test_acc2, best_x2 = simple_train(args, x, valset[0], valset[1], testset, tevalset)
+        test_loss2, test_acc2, best_x2 = simple_train(args, x, valset[0], valset[1], testset)
         torch.save(best_x2.data.cpu().clone(),
                    os.path.join(args.model_path, f"{args.dataset}_pretrained_val.pt"))
 
@@ -423,7 +394,7 @@ if __name__ == "__main__":
         x.data.copy_(sd)
         tmp_x = torch.cat([trainset[0], valset[0]], 0)
         tmp_y = torch.cat([old_train_y, valset[1]], 0)
-        test_loss3, test_acc3, best_x3 = simple_train(args, x, tmp_x, tmp_y, testset, tevalset)
+        test_loss3, test_acc3, best_x3 = simple_train(args, x, tmp_x, tmp_y, testset)
         torch.save(best_x3.data.cpu().clone(),
                    os.path.join(args.model_path, f"{args.dataset}_pretrained_trainval.pt"))
 
@@ -442,7 +413,7 @@ if __name__ == "__main__":
 
 
     else: # load pretrained model on valset and then start model training
-        trainset, valset, testset, tevalset, old_train_y = torch.load(
+        trainset, valset, testset, old_train_y = torch.load(
                 os.path.join(args.data_path, f"{args.dataset}_data_cleaning.pt"))
         args.device = torch.device("cuda") if torch.cuda.is_available() else torch.device("cpu")
 
@@ -452,7 +423,6 @@ if __name__ == "__main__":
         trainset = (trainset[0].to(args.device), trainset[1].to(args.device))
         valset   = (valset[0].to(args.device),   valset[1].to(args.device))
         testset  = (testset[0].to(args.device),  testset[1].to(args.device))
-        tevalset = (tevalset[0].to(args.device), tevalset[1].to(args.device))
         old_train_y = old_train_y.to(args.device)
 
         x = get_model(n_feats, num_classes, args.device)
@@ -472,7 +442,7 @@ if __name__ == "__main__":
         print(f"[pretrained] val                 : test loss {test_loss2} test acc {test_acc2}")
         print(f"[pretrained] correct train + val : test loss {test_loss3} test acc {test_acc3}")
 
-        test_loss, test_acc, teval_loss = evaluate(x, testset, tevalset)
+        test_loss, test_acc = evaluate(x, testset)
         print("original test loss ", test_loss, "original test acc ", test_acc)
 
         clean_indices = old_train_y.to(args.device).eq(trainset[1])
@@ -485,7 +455,6 @@ if __name__ == "__main__":
                                trainset=trainset,
                                valset=valset,
                                testset=testset,
-                               tevalset=tevalset,
                                clean_indices=clean_indices)
         if args.alg == 'F2BA':
             save_path = f"./{args.model_path}/{args.dataset}_{args.alg}_k{args.iterations}_xlr{args.x_lr}_wlr{args.w_lr}_xhatlr{args.xhat_lr}_lmbd{args.lmbd}_sd{args.seed}"
