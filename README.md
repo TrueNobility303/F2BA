@@ -23,7 +23,7 @@ python -u plot2fig.py
 ```
 
 
-## Distributed Learable Regularization
+## Distributed Learnnnable Regularization
 To reproduce our experiment results, please download the dataset `l2reg.pt` at [this link](https://drive.google.com/file/d/14deh-F4YlEH1c_s0P5DSliU042QV39K3/view?usp=sharing) and put it under the data folder specified in `args.data_path` in `distributed/l2reg.py`.
 
 You can also generate `l2reg.pt` by setting `args.pretrain=True` in `distributed/l2reg.py`.
