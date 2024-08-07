@@ -2,7 +2,7 @@
 
 Codes are adapted from [BOME](https://github.com/Cranial-XIX/BOME), which is published in NeurIPS 2022.
 
-## Single-Machine Data Hyper-Cleaning
+##  Data Hyper-Cleaning
 
 To reproduce our experiment results, first generate the data by running
 
