@@ -34,9 +34,7 @@ python -u l2reg.py --alg stocBiO
 
 ## Further Improvemens on Highly-Smooth Problems
 
-We provide some tricks to improve the performance for highly-smooth problems. 
-
-Note: This part is still under construction.
+We provide some tricks to improve the performance for highly-smooth problems (still under construction).
 
 ### Deterministic Case
 
