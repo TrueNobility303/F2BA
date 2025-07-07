@@ -1,5 +1,5 @@
 
-# Stochastic F2BA on  LLM Data-Cleaning
+# Large-Scaled F2BA on  LLM Data-Cleaning
 
 The code is based on [ScaleBiO](https://github.com/2003pro/ScaleBiO/).
 
