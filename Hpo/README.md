@@ -1,4 +1,4 @@
-# Deterministic F2BA on "Learn-to-Regularize"
+# Medium-Sized Experiments on "Learn-to-Regularize"
 
 The code is based on [BOME](https://github.com/Cranial-XIX/BOME/).
 
