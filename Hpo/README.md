@@ -89,7 +89,7 @@ Note that the optimal learning rates for `F2SA_2` and `F2SA` are different so yo
 **Suggestion 3. Never use variance reduction.**
 
 In our experiments, we find variance reduction techniques are useless and can even harm the performace. 
-It aligns with the conclusion in [BOME](https://github.com/Cranial-XIX/BOME/).
+It aligns with the findings in [BOME](https://github.com/Cranial-XIX/BOME/).
 You can run the methos `MRBO` or `VRBO` to see the performances of this class of methods.
 
 When all the runs are compated, you can visualize the results by running `python plot_l2reg_stoc.py`. You are expected to reproduce the following figure.
