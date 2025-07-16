@@ -26,7 +26,7 @@ We also corroborate this on the GPT-2 data-cleaning task: In the `./example` fol
 
 ![](https://github.com/TrueNobility303/F2BA/blob/main/LLM/example/GPT2_demo.png)
 
-where $w_{\rm noisy}$  denotes the learned weight of noisy data after training, which is expected to converge to 0. 
+where $w_{\rm noisy}$  denotes the learned weight of noisy data after training, which is expected to converge to $0$. 
 
 Reproduce the figure via
 
