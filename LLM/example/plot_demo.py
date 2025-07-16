@@ -1,7 +1,7 @@
 import matplotlib.pyplot as plt
 import pandas as pd
 
-df = pd.read_csv('F2BA.csv')
+df = pd.read_csv('F2SA.csv')
 
 F2SA_ST = df.iloc[:, 4].tolist() # single-timescale
 F2SA_TT = df.iloc[:, 8].to_list() # two-timescale
