@@ -2,7 +2,7 @@
 
 Official repository for "Near-Optimal Nonconvex-Strongly-Convex Bilevel Optimization with Fully First-Order Oracles".
 
-## Breaking News
+## News
 
 * (2025/9) We post F2SA-p on [arXiv](https://arxiv.org/abs/2509.02937).
 
