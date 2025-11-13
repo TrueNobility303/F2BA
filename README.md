@@ -4,6 +4,8 @@ Official repository for "Near-Optimal Nonconvex-Strongly-Convex Bilevel Optimiza
 
 ## Breaking News
 
+* (2025/9) We post F2SA-p on [arXiv](https://arxiv.org/abs/2509.02937).
+
 * (2025/7) Change the codebase with [ScaleBiO](https://github.com/2003pro/ScaleBiO). See the [LLM](https://github.com/TrueNobility303/F2BA/tree/main/LLM) folder.
 
 * (2025/5) F2BA [2] is accepted by JMLR.
