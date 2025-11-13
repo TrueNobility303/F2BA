@@ -4,11 +4,11 @@ Official repository for "Near-Optimal Nonconvex-Strongly-Convex Bilevel Optimiza
 
 ## Breaking News
 
-* [2025/7] Change the codebase with [ScaleBiO](https://github.com/2003pro/ScaleBiO). See the [LLM](https://github.com/TrueNobility303/F2BA/tree/main/LLM) folder.
+* (2025/7) Change the codebase with [ScaleBiO](https://github.com/2003pro/ScaleBiO). See the [LLM](https://github.com/TrueNobility303/F2BA/tree/main/LLM) folder.
 
-* [2025/5] F2BA [2] is accepted by JMLR.
+* (2025/5) F2BA [2] is accepted by JMLR.
 
-* [2024/5] Our work on hardness results [1] is accepted by COLT 2024.
+* (2024/5) Our work on hardness results [1] is accepted by COLT 2024.
 
 ## Reference 
 
