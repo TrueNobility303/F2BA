@@ -8,7 +8,7 @@ Official repository for "Near-Optimal Nonconvex-Strongly-Convex Bilevel Optimiza
 
 * (2025/7) Use [ScaleBiO](https://github.com/2003pro/ScaleBiO) as codebase. See the LLM folder.
 
-* (2025/5) F2BA [2] is accepted by JMLR.
+* (2025/5) F2BA [2] is accepted by JMLR 2025.
 
 * (2024/5) Our work on hardness results [1] is accepted by COLT 2024.
 
