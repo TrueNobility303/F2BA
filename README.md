@@ -1,6 +1,6 @@
 # F2BA (Fully First-Order Bilevel Approximation)
 
-Official repository for "Near-Optimal Nonconvex-Strongly-Convex Bilevel Optimization with Fully First-Order Oracles".
+Official repository for "Near-Optimal Nonconvex-Strongly-Convex Bilevel Optimization with Fully First-Order Oracles" and a series of follow-up works.
 
 ## News
 
