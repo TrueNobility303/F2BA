@@ -10,7 +10,7 @@ Official repository for "Near-Optimal Nonconvex-Strongly-Convex Bilevel Optimiza
 
 * (2025/5) F2BA is accepted by JMLR 2025.
 
-* (2024/5) Our work on hardness results [2] is accepted by COLT 2024, and we also extend F2BA to structured nonconvex-nonconvex (NC-NC) problems.
+* (2024/5) Our work on hardness results [2] is accepted by COLT 2024, and we also extend the analysis of F2BA to structured nonconvex-nonconvex (NC-NC) problems.
 
 * (2023/6) We prove F2BA [1] is near-optimal for nonconvex-strongly-convex (NC-SC) problems and post our result on [arXiv](https://arxiv.org/abs/2306.14853). 
 
