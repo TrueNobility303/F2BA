@@ -4,6 +4,8 @@ Official repository for "Near-Optimal Nonconvex-Strongly-Convex Bilevel Optimiza
 
 ## News
 
+* (2025/11) We posted a paper about lower bounds on [arXiv](https://arxiv.org/abs/2511.22331).
+
 * (2025/9) We improve F2BA in the stochastic setting to achieve near-optimal rates for highly smooth problems and post our result on [arXiv](https://arxiv.org/abs/2509.02937).
 
 * (2025/7) Use [ScaleBiO](https://github.com/2003pro/ScaleBiO) as codebase. See the LLM folder.
