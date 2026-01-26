@@ -6,15 +6,15 @@ Official repository for "Near-Optimal Nonconvex-Strongly-Convex Bilevel Optimiza
 
 ## News
 
-* (2026/1) F2SA-p [3] for near-optimal stochastic highly smooth problems is accepted by ICLR 2026.
+* (2026/1) F2SA-p [3] for near-optimal stochastic highly smooth problems was accepted by ICLR 2026.
 
 * (2025/11) We posted a paper [4] about lower bounds on arXiv.
 
-* (2025/5) F2BA is accepted by JMLR 2025. We also changed our codebase to [ScaleBiO](https://github.com/2003pro/ScaleBiO) in JMLR revision.
+* (2025/5) F2BA was accepted by JMLR 2025. We also changed our codebase to [ScaleBiO](https://github.com/2003pro/ScaleBiO) in JMLR revision.
 
-* (2024/5) Our work on hardness results [2] is accepted by COLT 2024, and we also extend the analysis of F2BA to structured nonconvex-nonconvex (NC-NC) problems.
+* (2024/5) Our work on hardness results [2] was accepted by COLT 2024, and we also extended the analysis of F2BA to structured nonconvex-nonconvex (NC-NC) problems.
 
-* (2023/6) We prove F2BA [1] is near-optimal for nonconvex-strongly-convex (NC-SC) problems and post our result on arxiv.
+* (2023/6) We proved F2BA [1] is near-optimal for nonconvex-strongly-convex (NC-SC) problems and posted our result on arXiv.
 
 ## Reference 
 
