@@ -10,9 +10,7 @@ Official repository for "Near-Optimal Nonconvex-Strongly-Convex Bilevel Optimiza
 
 * (2025/11) We posted a paper [4] about lower bounds on arXiv.
 
-* (2025/7) Use [ScaleBiO](https://github.com/2003pro/ScaleBiO) as codebase. See the LLM folder.
-
-* (2025/5) F2BA is accepted by JMLR 2025.
+* (2025/5) F2BA is accepted by JMLR 2025. We also changed our codebase to [ScaleBiO](https://github.com/2003pro/ScaleBiO) in JMLR revision.
 
 * (2024/5) Our work on hardness results [2] is accepted by COLT 2024, and we also extend the analysis of F2BA to structured nonconvex-nonconvex (NC-NC) problems.
 
