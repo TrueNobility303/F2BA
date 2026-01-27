@@ -12,58 +12,30 @@ For your convenience, we have trained the baseline method without regularization
 ```
 python -u l2reg.py --alg {%algorithm} {%other arguments}
 ```
-where `%algorthm` can be chosen in `['AID_CG', 'AID_FP', 'ITD', 'reverse', 'BOME', 'F2BA', 'AccF2BA', 'PBGD', 'stocBiO', 'VRBO', 'MRBO', 'F2SA', 'F2SA_p']`, and `%other arguments` pass the required hyper-parameters such as learning rates and momentum.
+where `%algorithm` can be chosen in `['AID_CG', 'AID_FP', 'ITD', 'reverse', 'BOME', 'F2BA', 'AccF2BA', 'PBGD', 'stocBiO', 'VRBO', 'MRBO', 'F2SA', 'F2SA_p']`, and `%other arguments` pass the required hyper-parameters such as learning rates and momentum.
 The results after running will be saved in the `save_l2reg` folder.
 
-## Further Improvements on Highly-Smooth Problems
+## Main Results
 
-We provide some tricks to improve the performance for highly-smooth problems (still under construction).
+Our papers suggest the following techniques to improve the performance for highly smooth problems.
 
-### Deterministic Case
+### Deterministic case: use Nesterov acceleration in both upper and lower levels.
 
-**Suggestion 1. Use Nesterov acceleration in the upper level.**
-
-Switch from `--alg F2BA` to `--alg AccF2BA` and compare their performances. 
+Run AccF2BA+ with the command
 ```
-python -u l2reg.py --alg F2BA
-python -u l2reg.py --alg AccF2BA
-```
-**Suggestion 2. Use Nesterov acceleration in the lower level.**
-
-We have turned on `nesterov=True` in the lower level optimizer if `args.x_momentum != 0.0`, so you only need to compare the result with and without using momentum. 
-```
-python -u l2reg.py --alg F2BA
-python -u l2reg.py --alg F2BA --x_momentum 0.5
+python -u l2reg.py --alg AccF2BA --x_momentum 0.5
 ```
 You may need to tune the momentum parameter for different problems. For example, in our problem, we find `--x_momentum 0.9` is not good while  `--x_momentum 0.5` performs well. 
 The same situation holds for the `AccF2BA` method.
 
-In the above figure, the methods with `+` use Nesterov momentum in the lower level.
+### Stochastic case: use high-order finite difference.
 
-### Stochastic Case
-
-**Suggestion 1. Normalize the gradient in the upper level.**
-
-Switch from gradient descent to normalized gradient descent, which may sometimes be useful in experiments.
-
-* Previous update: $x_{t+1} = x_t - \eta_t g_t$.
-
-* Suggested update: $x_{t+1} = x_t - \eta_t g_t / \Vert g_t \Vert$.
-
-**Suggestion 2. Use symmetric penalty reformulation.**
-
-In practice, this modification may not being many benifits since the problem remains very similar. But it leads to a very nice theoretical guarantee, which can improves the complexity from $\tilde{\mathcal{O}}(\epsilon^{-6})$ and $\tilde{\mathcal{O}}(\epsilon^{-5})$.
-
-* Previous reformulation: solve $\min_{x,y} \max_z f(x,y) + \lambda (g(x,y) - g(x,z))$.
-
-* Suggested reformulation: solve $\min_{x,y} \max_z (f(x,y) + f(x,z))/2 + \lambda (g(x,y) - g(x,z))$.
-
-We have implemented the improved method that jointly uses the above two tricks in `F2SA_2`. You can see the performance boost by running
+Run F2SA-p with the command
 ```
-python -u l2reg.py --alg F2SA
-python -u l2reg.py --alg F2SA_2 --w_lr 1.0
+python -u l2reg.py --alg F2SA_p --w_lr 0.1 --p {%p}
 ```
-Note that the optimal learning rates for `F2SA_2` and `F2SA` are different so you have to tuned both of them in a new problem. 
+In our experiments, we compare p in $\\{2,3,5,8,10\\}$.  The lowel-level probelms are solved in parallel to maximize the utilization of computing resources.
+
 
 
 
