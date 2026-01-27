@@ -2,7 +2,7 @@
 
 ## Description
 
-Official repository for "Near-Optimal Nonconvex-Strongly-Convex Bilevel Optimization with Fully First-Order Oracles" and a series of follow-up works. In these works, we give comprehensive studies on the computability of the problem, lower complexity bounds, and near-optimal deterministic/stochastic algorithms.
+Official repository for "Near-Optimal Nonconvex-Strongly-Convex Bilevel Optimization with Fully First-Order Oracles" and a series of follow-up works. In these works, we give comprehensive studies on the computability of the problem, lower complexity bounds, and near-optimal deterministic/stochastic algorithms. See codes for [1,2] in the `LLM` folder, and codes for [3,4] in the `medium_sized` folder
 
 ## News
 
