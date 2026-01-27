@@ -41,4 +41,21 @@ cd example && python plot_demo.py
 [3] Liu B, Ye M, Wright S, et al. Bome! bilevel optimization made easy: A simple first-order approach. In NeurIPS, 2022. 
 
 
+## Citations 
 
+```
+@inproceedings{chen2024finding,
+  title={On finding small hyper-gradients in bilevel optimization: Hardness results and improved analysis},
+  author={Chen, Lesi and Xu, Jing and Zhang, Jingzhao},
+  booktitle={COLT},
+  year={2024}
+}
+
+@article{chen2025near,
+  title={Near-optimal nonconvex-strongly-convex bilevel optimization with fully first-order oracles},
+  author={Chen, Lesi and Ma, Yaohua and Zhang, Jingzhao},
+  journal={JMLR},
+  pages={1--56},
+  year={2025}
+}
+```
