@@ -21,7 +21,7 @@ Our papers suggest the following techniques to improve the performance for highl
 
 ### Deterministic case: use Nesterov acceleration in both upper and lower levels.
 
-Run AccF2BA+ with the command
+Run AccF2BA+ [2] with the command
 ```
 python -u l2reg.py --alg AccF2BA --x_momentum 0.5
 ```
@@ -30,12 +30,15 @@ The same situation holds for the `AccF2BA` method.
 
 ### Stochastic case: use high-order finite difference.
 
-Run F2SA-p with the command
+Run F2SA-p [1] with the command
 ```
 python -u l2reg.py --alg F2SA_p --w_lr 0.1 --p {%p}
 ```
 In our experiments, we compare p in $\\{2,3,5,8,10\\}$.  The lowel-level probelms are solved in parallel to maximize the utilization of computing resources.
 
+## Reference 
 
+* [1] **Lesi Chen**, Junru Li, El Mahdi Chayti, and Jingzhao Zhang, _Faster Gradient Methods for Highly-smooth Stochastic Bilevel Optimization_ [[ICLR 2026]](https://arxiv.org/abs/2509.02937)
+* [2] **Lesi Chen** and Jingzhao Zhang. _On the Condition Number Dependency in Bilevel Optimization_ [[arXiv 2025]](https://arxiv.org/abs/2511.22331)
 
 
