@@ -16,7 +16,7 @@ The results after running will be saved in the `save_l2reg` folder.
 
 ## Main Results
 
-Medium-sized problems are typically highly smooth. For these problems, our papers suggest the following techniques to improve the performance to better exploit smoothness.
+Medium-sized problems are typically highly smooth. For these problems, our papers [1,2] suggest the following techniques to improve the performance to better exploit smoothness.
 
 ### Deterministic case: use Nesterov acceleration in both upper and lower levels.
 
