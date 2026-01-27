@@ -14,7 +14,6 @@ python -u l2reg.py --alg {%algorithm} {%other arguments}
 ```
 where `%algorthm` can be chosen in `['AID_CG', 'AID_FP', 'ITD', 'reverse', 'BOME', 'F2BA', 'AccF2BA', 'PBGD', 'stocBiO', 'VRBO', 'MRBO', 'F2SA', 'F2SA_p']`, and `%other arguments` pass the required hyper-parameters such as learning rates and momentum.
 The results after running will be saved in the `save_l2reg` folder.
-```
 
 ## Further Improvements on Highly-Smooth Problems
 
@@ -22,7 +21,7 @@ We provide some tricks to improve the performance for highly-smooth problems (st
 
 ### Deterministic Case
 
-**Sugestion 1. Use Nesterov accleration in the upper level.**
+**Suggestion 1. Use Nesterov acceleration in the upper level.**
 
 Switch from `--alg F2BA` to `--alg AccF2BA` and compare their performances. 
 ```
@@ -66,16 +65,5 @@ python -u l2reg.py --alg F2SA_2 --w_lr 1.0
 ```
 Note that the optimal learning rates for `F2SA_2` and `F2SA` are different so you have to tuned both of them in a new problem. 
 
-
-
-**Suggestion 3. Do not use variance reduction.**
-
-In our experiments, we find variance reduction techniques are useless and can even harm the performace. 
-It aligns with the findings in [BOME](https://github.com/Cranial-XIX/BOME/).
-You can run the methos `MRBO` or `VRBO` to see the performances of this class of methods.
-
-When all the runs are compated, you can visualize the results by running `python plot_l2reg_stoc.py`. You are expected to reproduce the following figure.
-
-![](https://github.com/TrueNobility303/Highly-Smooth-F2BA/blob/main/Hpo/save_l2reg/l2reg_stoc.png)
 
 
