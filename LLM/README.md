@@ -1,5 +1,5 @@
 
-# Large-Scaled F2BA on  LLM Data-Cleaning
+# Large-Scale F2BA on  LLM Data-Cleaning
 
 The code is based on [ScaleBiO](https://github.com/2003pro/ScaleBiO/).
 
@@ -34,11 +34,11 @@ Reproduce the figure via
 cd example && python plot_demo.py
 ```
 
-[1] Shen H, Xiao Q, Chen T. On penalty-based bilevel gradient descent method[J]. Mathematical Programming, 2025: 1-51.
+[1] Shen H, Xiao Q, Chen T. On penalty-based bilevel gradient descent method. Mathematical Programming, 2025: 1-51.
 
-[2] Kwon J, Kwon D, Wright S, et al. A fully first-order method for stochastic bilevel optimization[C] In ICML, 2023.
+[2] Kwon J, Kwon D, Wright S, et al. A fully first-order method for stochastic bilevel optimization. In ICML, 2023.
 
-[3] Liu B, Ye M, Wright S, et al. Bome! bilevel optimization made easy: A simple first-order approach[C]. In NeurIPS, 2022. 
+[3] Liu B, Ye M, Wright S, et al. Bome! bilevel optimization made easy: A simple first-order approach. In NeurIPS, 2022. 
 
 
 
