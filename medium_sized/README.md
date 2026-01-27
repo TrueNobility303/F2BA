@@ -4,7 +4,7 @@ The code is based on [BOME](https://github.com/Cranial-XIX/BOME/).
 
 ## Quick Start 
 
-1. Prepare the data.  Please download the [dataset](https://drive.google.com/file/d/14deh-F4YlEH1c_s0P5DSliU042QV39K3/) and unzip it under the hpo folder.
+1. Prepare the data.  Please download the [dataset](https://drive.google.com/file/d/14deh-F4YlEH1c_s0P5DSliU042QV39K3/) and unzip it.
 For your convenience, we have trained the baseline method without regularization and saved them into `save_l2reg` folder.
 
 2. Compare different bilevel optimization algorithms. 
@@ -16,7 +16,7 @@ where `%algorthm` can be chosen in `['AID_CG', 'AID_FP', 'ITD', 'reverse', 'BOME
 The results after running will be saved in the `save_l2reg` folder.
 ```
 
-## Further Improvemens on Highly-Smooth Problems
+## Further Improvements on Highly-Smooth Problems
 
 We provide some tricks to improve the performance for highly-smooth problems (still under construction).
 
