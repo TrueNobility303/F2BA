@@ -1,7 +1,6 @@
 # Medium-Sized Experiments on "Learn-to-Regularize"
 
-The code is based on [BOME](https://github.com/Cranial-XIX/BOME/).
-
+The code is based on [BOME](https://github.com/Cranial-XIX/BOME/). 
 ## Quick Start 
 
 1. Prepare the data.  Please download the [dataset](https://drive.google.com/file/d/14deh-F4YlEH1c_s0P5DSliU042QV39K3/) and unzip it.
@@ -17,7 +16,7 @@ The results after running will be saved in the `save_l2reg` folder.
 
 ## Main Results
 
-Our papers suggest the following techniques to improve the performance for highly smooth problems.
+Medium-sized problems are typically highly smooth. For these problems, our papers suggest the following techniques to improve the performance to better exploit smoothness.
 
 ### Deterministic case: use Nesterov acceleration in both upper and lower levels.
 
