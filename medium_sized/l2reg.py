@@ -51,7 +51,7 @@ def parse_args():
     parser.add_argument('--w_momentum', type=float, default=0.0)
     parser.add_argument('--x_momentum', type=float, default=0.0)
 
-    parser.add_argument('--p', type=int, default=2, choices=[1,2,3,5,8,10], help='p') # order of smoothness
+    parser.add_argument('--p', type=int, default=2, choices=[2,3,5,8,10], help='p') # order of smoothness
     parser.add_argument('--K', type=int, default=10, help='k')
     parser.add_argument('--B', type=int, default=10, help='B')
     parser.add_argument('--B0', type=int, default=0.1, help='B0')
@@ -463,9 +463,6 @@ def F2SA_p(args, x, w, trainset, valset, testset, tevalset):
     beta = []
 
     # coefficients calculated from https://web.media.mit.edu/~crtaylor/calculator.html
-    if args.p == 1:
-        alpha = [1]
-        beta = [-1]  
     if args.p == 2:
         alpha = [1/2]
     elif args.p == 3:
