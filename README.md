@@ -1,4 +1,4 @@
-![](Bilevel.png)
+![](Bilevel.jpg)
 
 ## Description
 
