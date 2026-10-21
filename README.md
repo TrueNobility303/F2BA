@@ -2,13 +2,13 @@
 
 ## Description
 
-Official repository for "Near-Optimal Nonconvex-Strongly-Convex Bilevel Optimization with Fully First-Order Oracles" and a series of follow-up works. In these works, we give comprehensive studies on the computability of the problem, lower complexity bounds, and near-optimal deterministic/stochastic algorithms. See codes for [1,2] in the `LLM` folder, and the code for [3,4] in the `medium_sized` folder.
+Official repository for "Near-Optimal Nonconvex-Strongly-Convex Bilevel Optimization with Fully First-Order Oracles" and a series of follow-up works. In these works, we give comprehensive studies on the computability of the problem, lower complexity bounds, and near-optimal deterministic/stochastic algorithms. See the code for [1,2] in the `LLM` folder, and the code for [3,4] in the `medium_sized` folder.
 
 ## News
 
 * (2026/10) [Gu, Wu, & Yang](https://arxiv.org/abs/2609.21905) and [Zhang et al.](https://arxiv.org/abs/2610.03633) proved large stochastic lower bounds using GPT, showing that our stochastic algorithms in [1-3] are tight in $\epsilon$. The gaps in $\kappa$ are also small.
 
-* (2026/10) Merge [4] with Ji (ICML 2026) and add many improvements made by GPT 5.5 Pro, now accepted by JMLR 2026.
+* (2026/8) Merge [4] with Ji (ICML 2026) and add many improvements made by GPT 5.5 Pro.
 
 * (2026/1) F2SA-p [3] for near-optimal stochastic highly smooth problems was accepted by ICLR 2026.
 
