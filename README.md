@@ -6,6 +6,8 @@ Official repository for "Near-Optimal Nonconvex-Strongly-Convex Bilevel Optimiza
 
 ## News
 
+* Our lower bound paper [4] was accepted by JMLR 2026.
+
 * (2026/10) [Gu, Wu, & Yang](https://arxiv.org/abs/2609.21905) and [Zhang et al.](https://arxiv.org/abs/2610.03633) proved large stochastic lower bounds using GPT, showing that our stochastic algorithms in [1-3] are tight in $\epsilon$. The gaps in $\kappa$ are also small.
 
 * (2026/8) Merge [4] with Ji (ICML 2026) and add many improvements made by GPT 5.5 Pro.
@@ -25,4 +27,4 @@ Official repository for "Near-Optimal Nonconvex-Strongly-Convex Bilevel Optimiza
 * [1] **Lesi Chen**, Yaohua Ma, and Jingzhao Zhang, _Near-Optimal Nonconvex-Strongly-Convex Bilevel Optimization with Fully First-Order Oracles_ [[JMLR 2025]](https://arxiv.org/abs/2306.14853)
 * [2] **Lesi Chen**, Jing Xu, and Jingzhao Zhang, _On Finding Small Hyper-Gradients in Bilevel Optimization: Hardness Results and Improved Analysis_ [[COLT 2024]](https://arxiv.org/abs/2301.00712)
 * [3] **Lesi Chen**, Junru Li, El Mahdi Chayti, and Jingzhao Zhang, _Faster Gradient Methods for Highly-smooth Stochastic Bilevel Optimization_ [[ICLR 2026]](https://arxiv.org/abs/2509.02937)
-* [4] **Lesi Chen**, Kaiyi Ji, and Jingzhao Zhang. _On the Condition Number Dependency in Bilevel Optimization_ [[arXiv 2026]](https://arxiv.org/abs/2511.22331)
+* [4] **Lesi Chen**, Kaiyi Ji, and Jingzhao Zhang. _On the Condition Number Dependency in Bilevel Optimization_ [[JMLR 2026]](https://arxiv.org/abs/2511.22331)
