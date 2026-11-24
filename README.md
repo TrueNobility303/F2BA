@@ -6,7 +6,7 @@ Official repository for "Near-Optimal Nonconvex-Strongly-Convex Bilevel Optimiza
 
 ## News
 
-* Our lower bound paper [4] was accepted by JMLR 2026.
+* (2026/11) Our lower bound paper [4] was accepted by JMLR 2026.
 
 * (2026/10) [Gu, Wu, & Yang](https://arxiv.org/abs/2609.21905) and [Zhang et al.](https://arxiv.org/abs/2610.03633) proved large stochastic lower bounds using GPT, showing that our stochastic algorithms in [1-3] are tight in $\epsilon$. The gaps in $\kappa$ are also small.
 
